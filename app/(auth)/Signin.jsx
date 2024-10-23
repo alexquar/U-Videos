@@ -43,7 +43,6 @@ const Signin = () => {
     value={form.password}
     handleChangeText={(value) => setFrom({...form,password:value})}
     otherStyles="mt-7"
-    keyboardType="email-address"
     />
 
     <CustomButton
