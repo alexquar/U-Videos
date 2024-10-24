@@ -8,6 +8,8 @@ import { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
 import { createUser } from '../../lib/appwrite'
+import { Alert } from 'react-native'
+import { router } from 'expo-router'
 const Signup = () => {
   const [form,setFrom] = useState({
     email:"",
@@ -17,14 +19,24 @@ const Signup = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const submit = () => {
+  const submit = async () => {
     setLoading(true)
 
     if (form.userName === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
     }
-    
-    createUser(form.email,form.password,form.userName)
+
+    try {
+      const result = await createUser(form.email, form.password, form.userName);
+      console.log(result);
+
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false);
+    }
+
   }
   return (
    <SafeAreaView className="bg-primary h-full px-4">

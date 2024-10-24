@@ -7,6 +7,9 @@ import FormField from '../../components/FormField'
 import { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
+import { signIn } from '../../lib/appwrite'
+import { Alert } from 'react-native'
+import { router } from 'expo-router'
 const Signin = () => {
   const [form,setFrom] = useState({
     email:"",
@@ -15,9 +18,25 @@ const Signin = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const submit = () => {
+  const submit = async () => {
     setLoading(true)
+
+    if (form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
+
+    try {
+      const result = await signIn(form.email, form.password);
+      console.log(result);
+
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false);
+    }
   }
+
   return (
    <SafeAreaView className="bg-primary h-full px-4">
     <ScrollView> 
