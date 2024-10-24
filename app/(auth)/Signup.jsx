@@ -7,6 +7,7 @@ import FormField from '../../components/FormField'
 import { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
+import { createUser } from '../../lib/appwrite'
 const Signup = () => {
   const [form,setFrom] = useState({
     email:"",
@@ -18,6 +19,12 @@ const Signup = () => {
 
   const submit = () => {
     setLoading(true)
+
+    if (form.userName === "" || form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
+    
+    createUser(form.email,form.password,form.userName)
   }
   return (
    <SafeAreaView className="bg-primary h-full px-4">
