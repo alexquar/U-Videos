@@ -20,6 +20,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false)
 
   const submit = async () => {
+    console.log("clicked")
     setLoading(true)
 
     if (form.userName === "" || form.email === "" || form.password === "") {
@@ -73,7 +74,7 @@ const Signup = () => {
 
     <CustomButton
     title="Sign in"
-    handlePress={() => {submit}}
+    handlePress={submit}
     containerStyles={"mt-7"}
     isLoading={loading}
     />

@@ -4,8 +4,12 @@ import { router} from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton'
-
+import {useGlobalContext} from '../context/globalProvider'
+import { Redirect } from 'expo-router'
 const index = () => {
+
+  const {isLoading, isLoggedIn} = useGlobalContext();
+  if(!isLoading && isLoggedIn) return <Redirect href="Home"  />
   return (
     <SafeAreaView className="bg-primary h-full" >
 <ScrollView

@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Tabs, Redirect } from 'expo-router'
+import { Tabs, Redirect, Stack } from 'expo-router'
 import { icons } from '../../constants';
-
+import { Image } from 'react-native';
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
     <View className="flex items-center justify-center gap-2">
@@ -26,20 +26,17 @@ const TabsLayout = () => {
   return (
     <>
     <Tabs
-    screenOptions={
-      {
-        tabBarShowLabel: false, //gets rid of extra label
-        tabBarActiveTintColor: '#FFA001', //selected color
-        tabBarInactiveBackgroundColor: '#CDCDE0', //unselected color
-        tabBarStyle: {
-          backgroundColor: '#161622', //bg color
-          borderTopWidth: 1, //0-1
-          borderTopColor: '#232533', //transparent too
-          height: 70, //bar height
-          paddingVertical: 10, //y padding
-        },
-      }
-    }
+            screenOptions={{
+              tabBarActiveTintColor: "#FFA001",
+              tabBarInactiveTintColor: "#CDCDE0",
+              tabBarShowLabel: false,
+              tabBarStyle: {
+                backgroundColor: "#161622",
+                borderTopWidth: 1,
+                borderTopColor: "#232533",
+                height: 84,
+              },
+            }}    
     >
         <Tabs.Screen 
         name="Home"
@@ -102,7 +99,7 @@ const TabsLayout = () => {
           }}
         />
     </ Tabs>
-    </>
+        </>
   )
 }
 
