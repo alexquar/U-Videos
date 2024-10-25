@@ -5,7 +5,7 @@ import React from 'react'
 import { icons } from '../constants'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
-const VideoCard = ({video: {title, thumbnail, video, users}}) => {
+const VideoCard = ({video: {title, thumbNail, video, users}}) => {
     let avatar
     let name
     if(users){
@@ -51,10 +51,15 @@ const VideoCard = ({video: {title, thumbnail, video, users}}) => {
             </View>
             {
                 playing ?
-                <Text>Playing</Text>
+                <Text className="text-white">Playing</Text>
                 :
-                <TouchableOpacity onPress={() => setPlaying(true)}>
-                    
+                <TouchableOpacity activeOpacity="0.7" className="w-full h-60 rounded-xl relative justify-center items-center" onPress={() => setPlaying(true)}>
+                 <Image
+                 source={{uri: thumbNail}}
+                 className='w-full h-full rounded-xl mt-3'
+                 resizeMode='cover'
+                 />
+                 <Image source={icons.play} className='w-12 h-12 absolute' resizeMode='contain' />
                 </TouchableOpacity>
             }
         </View>
