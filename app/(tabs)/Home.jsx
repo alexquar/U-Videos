@@ -59,7 +59,7 @@ await refetch()
           </View>
         )}
         ListEmptyComponent={() => (
-          <EmptyState title="No videos found" video="Sorry, we got nothing to show you..." />
+          <EmptyState title="No videos found" subtitle="Sorry, we got nothing to show you..." />
         )
         }
         refreshControl={
