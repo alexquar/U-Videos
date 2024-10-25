@@ -5,6 +5,8 @@ import React from 'react'
 import { icons } from '../constants'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import { Video } from 'expo-av'
+import { ResizeMode } from 'expo-av'
 const VideoCard = ({video: {title, thumbNail, video, users}}) => {
     let avatar
     let name
@@ -51,7 +53,20 @@ const VideoCard = ({video: {title, thumbNail, video, users}}) => {
             </View>
             {
                 playing ?
-                <Text className="text-white">Playing</Text>
+                <Video
+                source={{
+                  uri: video,
+                }} 
+                className="w-full h-60 rounded-xl mt-3"
+                resizeMode={ResizeMode.CONTAIN}
+                useNativeControls
+                shouldPlay
+                onPlaybackStatusUpdate={(status) => {
+                  if (status.didJustFinish) {
+                    setPlay(false);
+                  }
+                }}
+              />
                 :
                 <TouchableOpacity activeOpacity="0.7" className="w-full h-60 rounded-xl relative justify-center items-center" onPress={() => setPlaying(true)}>
                  <Image
