@@ -7,17 +7,18 @@ import FormField from '../../components/FormField'
 import { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
-import { signIn } from '../../lib/appwrite'
+import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { Alert } from 'react-native'
 import { router } from 'expo-router'
+import { useGlobalContext } from '../../context/globalProvider'
 const Signin = () => {
   const [form,setFrom] = useState({
     email:"",
     password:""
   })
-
+   
   const [loading, setLoading] = useState(false)
-
+  const {setUser, setIsLoggedIn} = useGlobalContext();
   const submit = async () => {
     setLoading(true)
 
@@ -26,8 +27,11 @@ const Signin = () => {
     }
 
     try {
-      const result = await signIn(form.email, form.password);
-      console.log(result);
+       await signIn(form.email, form.password);
+
+       const result = await getCurrentUser()
+        setUser(result)
+        setIsLoggedIn(true)
 
       router.replace("/Home");
     } catch (error) {

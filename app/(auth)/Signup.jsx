@@ -10,13 +10,14 @@ import { Link } from 'expo-router'
 import { createUser } from '../../lib/appwrite'
 import { Alert } from 'react-native'
 import { router } from 'expo-router'
+import { useGlobalContext } from '../../context/globalProvider'
 const Signup = () => {
   const [form,setFrom] = useState({
     email:"",
     password:"",
     userName:""
   })
-
+  const {setUser, setIsLoggedIn} = useGlobalContext();
   const [loading, setLoading] = useState(false)
 
   const submit = async () => {
@@ -28,8 +29,10 @@ const Signup = () => {
     }
 
     try {
-      const result = await createUser(form.email, form.password, form.userName);
-      console.log(result);
+     const result = await createUser(form.email, form.password, form.userName);
+      setUser(result)
+      setIsLoggedIn(true)
+
 
       router.replace("/home");
     } catch (error) {
