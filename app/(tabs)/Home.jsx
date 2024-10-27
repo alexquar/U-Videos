@@ -9,9 +9,10 @@ import { getAllPosts, getLatestPosts } from '../../lib/appwrite';
 import useAppwrite from '../../lib/useAppwrite';
 import VideoCard from '../../components/VideoCard';
 import { RefreshControl } from 'react-native';
+import { useGlobalContext } from '../../context/globalProvider';
 const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
-  
+  const {user} = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
 
   const {data: latestPosts} = useAppwrite(getLatestPosts)
@@ -35,7 +36,7 @@ await refetch()
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
+                  Welcome Back, {user?.userName}
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
                   U Videos

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, Alert, TouchableOpacity } from 'react-native'
+import { View, FlatList, Image, Alert, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons } from '../../constants';
 import EmptyState from '../../components/EmptyState';
@@ -7,12 +7,21 @@ import useAppwrite from '../../lib/useAppwrite';
 import VideoCard from '../../components/VideoCard';
 import { useGlobalContext } from '../../context/globalProvider';
 import InfoBox from '../../components/InfoBox';
+import { signOut } from '../../lib/appwrite';
+import { router } from 'expo-router';
 const profile = () => {
   const {user, setUser, setIsLoggedIn} = useGlobalContext();
   const { data: posts } = useAppwrite(()=>getUserPosts(user.$id));
 
-  const logout = () => {
-
+  const logout = async () => {
+    try{
+    await signOut();
+    setUser(null);
+    setIsLoggedIn(false);
+    router.replace("/Signin");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   }
 
   return (
@@ -30,10 +39,12 @@ const profile = () => {
             source={icons.logout} resizeMode='contain' className="w-6 h-6"/>
               </TouchableOpacity>
               <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
-              <Image source={{uri: user.avatar}} className="w-[90%] h-[90%] rounded-lg" resizeMode='cover'/>
+                {user &&
+              <Image source={{uri: user.avatar || null}} className="w-[90%] h-[90%] rounded-lg" resizeMode='cover'/>
+                }
               </View>
               <InfoBox
-              title={user?.username}
+              title={user?.userName}
               containerStyles="mt-5"
               titleStyles="text-lg"
                />

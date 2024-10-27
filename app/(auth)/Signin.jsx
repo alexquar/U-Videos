@@ -29,7 +29,7 @@ const Signin = () => {
       const result = await signIn(form.email, form.password);
       console.log(result);
 
-      router.replace("/home");
+      router.replace("/Home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
