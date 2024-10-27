@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Video, ResizeMode } from 'expo-av'
 import { icons } from '../../constants'
 import CustomButton from '../../components/CustomButton'
-import * as DocumentPicker from 'expo-document-picker'
+import * as ImagePicker from 'expo-image-picker'
 import { Alert } from 'react-native'
 import { router } from 'expo-router'
 import { createVideoPost } from '../../lib/appwrite'
@@ -20,19 +20,19 @@ const Create = () => {
   })
   const [loading, setLoading] = useState(false)
   const {user} = useGlobalContext()
+
   const openPicker = async (selectType)=>{
-    const result = await DocumentPicker.getDocumentAsync({
-      type:
-        selectType === "image"
-          ? ["image/png", "image/jpg"]
-          : ["video/mp4", "video/gif"],
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: selectType === "image" ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.Videos,
+      quality: 1,
+      aspect: [4, 3],
     });
 
     if (!result.canceled) {
       if (selectType === "image") {
         setForm({
           ...form,
-          thumbnail: result.assets[0],
+          thumbNail: result.assets[0],
         });
       }
 
@@ -42,10 +42,6 @@ const Create = () => {
           video: result.assets[0],
         }); 
       }
-    } else {
-      setTimeout(() => {
-        Alert.alert("No Document picked", ":(");
-      }, 100);
     }
   } 
 
@@ -105,9 +101,7 @@ const Create = () => {
     <Video 
     source={{uri:form.video.uri}}
     className="w-full h-64 rounded-2xl"
-    useNativeControls
     resizeMode={ResizeMode.COVER}
-    isLooping
 
     /> :
     <View className="w-full h-40 px-4 bg-black-100 rounded-2xl justify-center items-center">
@@ -128,7 +122,8 @@ const Create = () => {
     source={{uri:form.thumbNail.uri}}
     resizeMode='cover'
     className="w-full h-64 rounded-2xl"
-    /> :
+    />
+    :
     <View className="w-full h-16 px-4 bg-black-100 rounded-2xl justify-center items-center border-2 border-black-200 flex-row space-x-2">
         <Image  source={icons.upload} resizeMode='contain' className="w-5 h-5" />
         <Text className="text-sm text-gray-100 font-pmedium">
